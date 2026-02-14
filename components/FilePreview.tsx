@@ -153,7 +153,7 @@ export default function FilePreview() {
               </svg>
             </div>
             <div>
-              <h2 className="font-bold text-lg">ファイルプレビュー</h2>
+              <h2 className="font-bold text-lg text-[#0bb3e5]">ファイルプレビュー</h2>
               <p className="text-xs text-white/80">ZIPファイルを解凍してプレビュー</p>
             </div>
           </div>

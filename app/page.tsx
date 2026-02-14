@@ -26,7 +26,7 @@ export default function Home() {
                       : 'text-foreground hover:text-[#FF5577]'
                   }`}
                 >
-                  AIチャット
+                  サイト生成AI
                 </button>
                 <button
                   onClick={() => setActiveTab('preview')}
@@ -40,14 +40,6 @@ export default function Home() {
                 </button>
               </nav>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="hidden md:block px-6 py-2 text-sm font-medium text-foreground hover:text-[#FF5577] transition-colors rounded-full">
-                ログイン
-              </button>
-              <button className="px-6 py-2 text-sm font-medium bg-[#FF5577] text-white hover:bg-[#ff4466] transition-colors rounded-full">
-                無料で始める
-              </button>
-            </div>
           </div>
         </div>
       </header>
@@ -55,18 +47,6 @@ export default function Home() {
       {/* Main Content */}
       <main className="container mx-auto px-4 max-w-7xl py-12">
         <div className="flex flex-col items-center gap-8">
-          {/* Hero Section */}
-          <div className="text-center max-w-3xl">
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
-              AIと共に創る
-              <span className="block mt-2 bg-gradient-to-r from-[#FF5577] via-[#0AA3D5] to-[#EA9D05] bg-clip-text text-transparent">
-                次世代の開発体験
-              </span>
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              AIアシスタントとファイルプレビューで、開発をもっとスムーズに
-            </p>
-          </div>
 
           {/* Tab Content */}
           <div className="w-full flex justify-center">
