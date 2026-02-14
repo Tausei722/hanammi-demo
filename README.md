@@ -26,9 +26,10 @@ hanamii.jp と同じ技術スタック（Next.js）を使用した、AIアシス
 ## セットアップ
 
 ### 前提条件
-- Node.js 18以上
+- Node.js 18以上（ローカル開発の場合）
+- Docker & Docker Compose（Docker環境の場合）
 
-### インストール
+### 方法1: ローカル環境
 
 ```bash
 # 依存関係のインストール
@@ -39,6 +40,35 @@ npm run dev
 ```
 
 アプリケーションは [http://localhost:3000](http://localhost:3000) で起動します。
+
+### 方法2: Docker環境
+
+#### プロダクション環境
+
+```bash
+# Dockerイメージをビルドして起動
+docker-compose up -d
+
+# ログを確認
+docker-compose logs -f
+
+# 停止
+docker-compose down
+```
+
+アプリケーションは [http://localhost:3000](http://localhost:3000) で起動します。
+
+#### 開発環境
+
+```bash
+# 開発用コンテナを起動（ホットリロード有効）
+docker-compose --profile dev up dev
+
+# 停止
+docker-compose --profile dev down
+```
+
+開発環境は [http://localhost:3001](http://localhost:3001) で起動します。
 
 ### ビルド
 
