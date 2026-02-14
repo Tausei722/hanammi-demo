@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
 export async function POST(request: NextRequest) {
   try {
     const { message, conversationHistory } = await request.json()
@@ -22,6 +18,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // OpenAIクライアントを初期化
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
 
     // 会話履歴を構築
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [

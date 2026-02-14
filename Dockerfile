@@ -16,6 +16,10 @@ COPY . .
 # Next.js collects completely anonymous telemetry data about general usage.
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# ビルド時のダミー環境変数（実際のAPIキーは実行時に設定）
+ARG OPENAI_API_KEY=dummy_key_for_build
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+
 RUN npm run build
 
 # Stage 3: Runner
