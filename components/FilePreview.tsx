@@ -111,31 +111,54 @@ export default function FilePreview() {
 
   const getBadgeColor = (type: string) => {
     switch (type) {
-      case 'html': return 'bg-orange-100 text-orange-800'
-      case 'css': return 'bg-blue-100 text-blue-800'
-      case 'js': return 'bg-yellow-100 text-yellow-800'
-      case 'image': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'html': return 'bg-[#FF5577]/10 text-[#FF5577] border border-[#FF5577]/20'
+      case 'css': return 'bg-[#0AA3D5]/10 text-[#0AA3D5] border border-[#0AA3D5]/20'
+      case 'js': return 'bg-[#EA9D05]/10 text-[#EA9D05] border border-[#EA9D05]/20'
+      case 'image': return 'bg-green-100 text-green-700 border border-green-200'
+      default: return 'bg-gray-100 text-gray-600 border border-gray-200'
     }
   }
 
   return (
-    <div className="flex flex-col h-[600px] w-full max-w-6xl border border-gray-200 rounded-lg overflow-hidden bg-white shadow-lg">
+    <div className="flex flex-col h-[600px] w-full max-w-6xl border-2 border-gray-200 rounded-3xl overflow-hidden bg-white shadow-xl">
       {/* Toast */}
       {toast && (
-        <div className={`fixed top-4 right-4 px-4 py-3 rounded-md shadow-lg ${
-          toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        } z-50`}>
-          {toast.message}
+        <div className={`fixed top-4 right-4 px-6 py-4 rounded-2xl shadow-lg ${
+          toast.type === 'success'
+            ? 'bg-gradient-to-r from-[#0AA3D5] to-[#0bb3e5] text-white'
+            : 'bg-gradient-to-r from-[#FF5577] to-[#ff6688] text-white'
+        } z-50 animate-slide-in`}>
+          <div className="flex items-center gap-3">
+            {toast.type === 'success' ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+            <span className="font-medium">{toast.message}</span>
+          </div>
         </div>
       )}
 
       {/* Header */}
-      <div className="bg-green-500 text-white px-4 py-3">
+      <div className="bg-gradient-to-r from-[#0AA3D5] to-[#0bb3e5] text-white px-6 py-4">
         <div className="flex justify-between items-center">
-          <h2 className="font-bold text-lg">ファイルプレビュー</h2>
-          <label htmlFor="file-upload" className="px-4 py-2 bg-white bg-opacity-20 rounded-md cursor-pointer hover:bg-opacity-30 transition-all text-sm">
-            ZIPファイルをアップロード
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="font-bold text-lg">ファイルプレビュー</h2>
+              <p className="text-xs text-white/80">ZIPファイルを解凍してプレビュー</p>
+            </div>
+          </div>
+          <label htmlFor="file-upload" className="px-6 py-2 bg-white text-[#0AA3D5] rounded-full cursor-pointer hover:shadow-lg transition-all text-sm font-medium">
+            ZIPをアップロード
             <input
               id="file-upload"
               type="file"
@@ -149,29 +172,37 @@ export default function FilePreview() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* File List */}
-        <div className="w-64 border-r border-gray-200 overflow-y-auto bg-gray-50">
+        <div className="w-72 border-r border-gray-100 overflow-y-auto bg-gray-50">
           {files.length === 0 ? (
-            <div className="p-4">
-              <p className="text-sm text-gray-500 text-center">
-                ZIPファイルをアップロードしてください
+            <div className="p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-500 font-medium">
+                ZIPファイルをアップロード
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                ドラッグ&ドロップも可能
               </p>
             </div>
           ) : (
-            <div className="space-y-0">
+            <div className="p-2 space-y-1">
               {files.map((file, index) => (
                 <div
                   key={index}
-                  className={`px-3 py-2 cursor-pointer border-l-3 ${
+                  className={`px-4 py-3 cursor-pointer rounded-xl transition-all ${
                     selectedFile?.path === file.path
-                      ? 'bg-blue-50 border-l-4 border-l-blue-500'
-                      : 'border-l-4 border-l-transparent hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-[#0AA3D5]/10 to-[#0bb3e5]/10 border-l-4 border-[#0AA3D5] shadow-sm'
+                      : 'hover:bg-white border-l-4 border-transparent'
                   }`}
                   onClick={() => handleFileSelect(file)}
                 >
-                  <p className={`text-sm ${selectedFile?.path === file.path ? 'font-bold' : 'font-normal'}`}>
+                  <p className={`text-sm truncate ${selectedFile?.path === file.path ? 'font-semibold text-[#0E2D5A]' : 'font-normal text-gray-700'}`}>
                     {file.name}
                   </p>
-                  <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs ${getBadgeColor(file.type)}`}>
+                  <span className={`inline-block mt-2 px-2 py-1 rounded-lg text-xs font-medium ${getBadgeColor(file.type)}`}>
                     {file.type}
                   </span>
                 </div>
@@ -183,8 +214,15 @@ export default function FilePreview() {
         {/* Preview */}
         <div className="flex-1 flex flex-col bg-white">
           {!selectedFile ? (
-            <div className="flex items-center justify-center h-full">
-              <p className="text-gray-500">ファイルを選択してプレビュー</p>
+            <div className="flex flex-col items-center justify-center h-full text-center p-8">
+              <div className="w-20 h-20 mb-4 rounded-full bg-gradient-to-br from-[#FF5577]/20 to-[#0AA3D5]/20 flex items-center justify-center">
+                <svg className="w-10 h-10 text-[#0AA3D5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <p className="text-gray-500 font-medium">ファイルを選択してプレビュー</p>
+              <p className="text-sm text-gray-400 mt-1">左側のリストからファイルを選択してください</p>
             </div>
           ) : selectedFile.type === 'html' && previewUrl ? (
             <iframe
@@ -193,18 +231,20 @@ export default function FilePreview() {
               title="Preview"
             />
           ) : selectedFile.type === 'image' && previewUrl ? (
-            <div className="flex items-center justify-center h-full p-4">
+            <div className="flex items-center justify-center h-full p-8 bg-gray-50">
               <img
                 src={previewUrl}
                 alt={selectedFile.name}
-                className="max-w-full max-h-full object-contain"
+                className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
               />
             </div>
           ) : (
-            <div className="p-4 overflow-y-auto h-full">
-              <pre className="text-xs whitespace-pre-wrap">
-                {selectedFile.content as string}
-              </pre>
+            <div className="p-6 overflow-y-auto h-full bg-gray-50">
+              <div className="bg-[#0E2D5A] rounded-xl p-4 shadow-lg">
+                <pre className="text-xs whitespace-pre-wrap text-gray-100 font-mono">
+                  {selectedFile.content as string}
+                </pre>
+              </div>
             </div>
           )}
         </div>
