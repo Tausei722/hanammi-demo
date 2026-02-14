@@ -45,16 +45,53 @@ export default function AIChatWindow() {
     setInput('')
     setIsLoading(true)
 
-    setTimeout(() => {
+    try {
+      // 会話履歴を構築（最新10件のみ送信してコスト削減）
+      const conversationHistory = messages.slice(-10).map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+      }))
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          conversationHistory,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'API呼び出しに失敗しました')
+      }
+
+      const data = await response.json()
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `「${currentInput}」についてお答えします。これはデモのAI応答です。実際のAI APIを統合することで、より高度な応答が可能になります。`,
+        content: data.response,
         timestamp: new Date(),
       }
+
       setMessages((prev) => [...prev, assistantMessage])
+    } catch (error: any) {
+      console.error('Error calling AI API:', error)
+
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: `エラーが発生しました: ${error.message || '不明なエラー'}。OpenAI APIキーが設定されているか確認してください。`,
+        timestamp: new Date(),
+      }
+
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

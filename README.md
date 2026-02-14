@@ -41,6 +41,22 @@ npm run dev
 
 アプリケーションは [http://localhost:3000](http://localhost:3000) で起動します。
 
+#### OpenAI APIの設定
+
+AIチャット機能を有効にするには、OpenAI APIキーが必要です：
+
+1. [OpenAI Platform](https://platform.openai.com/api-keys) でAPIキーを取得
+2. プロジェクトルートに `.env.local` ファイルを作成
+3. 以下の内容を記述：
+
+```bash
+OPENAI_API_KEY=sk-your-api-key-here
+```
+
+4. 開発サーバーを再起動
+
+**注意**: `.env.local` は `.gitignore` に含まれており、GitHubにコミットされません。
+
 ### 方法2: Docker環境
 
 #### プロダクション環境
@@ -97,24 +113,32 @@ npm start
 
 ## AI APIの統合
 
-現在のAIチャット機能はモック応答を返しています。実際のAI APIを統合するには、`components/AIChatWindow.tsx` の `handleSend` 関数内の `setTimeout` 部分を以下のように置き換えてください：
+**✅ OpenAI API統合済み**
+
+このアプリケーションは OpenAI API (GPT-3.5 Turbo) と統合されています。
+
+### 使用しているモデル
+- **GPT-3.5 Turbo**: コストパフォーマンスに優れた高速モデル
+- 会話履歴をサポート（最新10件）
+- 日本語対応
+
+### モデルの変更
+
+より高性能なモデルを使用する場合は、`app/api/chat/route.ts` の以下の部分を変更：
 
 ```typescript
-// 例: OpenAI APIとの統合
-const response = await fetch('/api/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ message: currentInput }),
-})
-const data = await response.json()
-const assistantMessage: Message = {
-  id: (Date.now() + 1).toString(),
-  role: 'assistant',
-  content: data.response,
-  timestamp: new Date(),
-}
-setMessages((prev) => [...prev, assistantMessage])
+// GPT-4を使用する場合
+model: 'gpt-4-turbo-preview',
+
+// GPT-4oを使用する場合
+model: 'gpt-4o',
 ```
+
+### APIコスト管理
+
+- 会話履歴は最新10件のみ送信（コスト削減）
+- `max_tokens: 500` で応答長を制限
+- 実運用では、ユーザーごとの使用量制限を推奨
 
 ## プロジェクト構造
 
